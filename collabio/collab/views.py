@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
 from django.views.generic import CreateView
-from .models import competences,client,collaborateurs,outils,experiences
+from collab.models import competences,client,collaborateurs,outils,experiences
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from operator import itemgetter
+import logging
 
 # Homepage
 def index(request):
@@ -13,6 +15,7 @@ def index(request):
     nbConsultantEnMission = nbConsultant - nbConsultantInterco
     txInterco = round((nbConsultantInterco / nbConsultant)*100,2)
     nbCompe = competences.objects.count()
+    nbOutils = outils.objects.count()
     nbClient = client.objects.count()
     #calcul du nombre de client actif (a savoir les clients avec une mission en cours a date) A REWORK CAR PAS DE PRISE EN COMPTE DE DATE
     def getClientActif():
@@ -37,25 +40,59 @@ def index(request):
             listeCompe.append(nb_compe_calcul)
         moyenne=(sum(listeCompe)/len(listeCompe))
         return(moyenne)
-    moyenneCompetence = getMoyenneCompetence()
-    #calcul top 5 des competences - la fonction retourne la competence en position N du top
-    def getTop5Competences(top):
-        dicoCompetences_tempo={}
+    def getMoyenneOutil():
+        listeOutil=[]
         listeCollab=collaborateurs.objects.all()
         for elt in listeCollab:
-            liste_compe_test=elt.listeCompetencesCles.values("nomCompetence")
-            for elt in liste_compe_test:
-                compe=elt['nomCompetence']
-                if compe in dicoCompetences_tempo:
-                    valeur_ancienne=dicoCompetences_tempo.get("compe")
-                    if valeur_ancienne == None:
-                        valeur_ancienne=0
-                    dicoCompetences_tempo[compe]=valeur_ancienne+1
+            nb_outil_calcul = elt.outilsCollaborateur.count()
+            listeOutil.append(nb_outil_calcul)
+        moyenne=(sum(listeOutil)/len(listeOutil))
+        return(moyenne)
+    moyenneOutil = getMoyenneOutil()
+    moyenneCompetence = getMoyenneCompetence()
+    #calcul top 5 des outils - la fonction retourne l'outil en position N du top
+    def getTop5Outils():
+        listeCollab=collaborateurs.objects.all()
+        dicoOutil_temp={}
+        #on récupère les outils de chaque collab et on fait un dictionnaire sous la forme {"outil1":"nb de consultant l'ayant)"}
+        for collab in listeCollab:
+            liste_outil_collab = collab.outilsCollaborateur.values()
+            for elt in liste_outil_collab:
+                outil = elt['nomOutil']
+                if outil in dicoOutil_temp:
+                    nb_temp = dicoOutil_temp.get(outil)
+                    dicoOutil_temp[outil]=nb_temp+1
                 else:
-                    dicoCompetences_tempo[compe]=1
-        dicoCompetences=sorted(dicoCompetences_tempo.items(), key=lambda x: x[1], reverse=True)
-        return(dicoCompetences[top])
-    top1Competence=getTop5Competences(0)
+                    dicoOutil_temp[outil]=1
+        #on trie le dictionnaire par valeur
+        dicoOutil = sorted(dicoOutil_temp.items(), key=lambda x: x[1], reverse=True)
+        #on récupère les valeurs en iterant sur le nouveau dictionnaire et on met dans une liste
+        topOutil=[x[0] for x in dicoOutil]
+        topfinal=topOutil[:5]
+        return topfinal
+    topOutilfront = getTop5Outils()    
+
+    #calcul top 5 des competences - la fonction retourne la competence en position N du top
+    def getTop5Competences():
+        listeCollab=collaborateurs.objects.all()
+        dicoCompetences_temp={}
+        #on récupère les competences de chaque collab et on fait un dictionnaire sous la forme {"competence1":"nb de consultant l'ayant)"}
+        for collab in listeCollab:
+            liste_compe_collab = collab.listeCompetencesCles.values()
+            for elt in liste_compe_collab:
+                competence = elt['nomCompetence']
+                if competence in dicoCompetences_temp:
+                    nb_temp = dicoCompetences_temp.get(competence)
+                    dicoCompetences_temp[competence]=nb_temp+1
+                else:
+                    dicoCompetences_temp[competence]=1
+        #on trie le dictionnaire par valeur
+        dicoCompetences = sorted(dicoCompetences_temp.items(), key=lambda x: x[1], reverse=True)
+        #on récupère les valeurs en iterant sur le nouveau dictionnaire et on met dans une liste
+        topCompetence=[x[0] for x in dicoCompetences]
+        topfinal=topCompetence[:5]
+        return topfinal
+    topCompetencefront = getTop5Competences()   
     context={
     "nbConsultant":nbConsultant,
     "nbConsultantInterco":nbConsultantInterco,
@@ -67,19 +104,35 @@ def index(request):
     "txClientInactif":txClientInactif,
     "nbCompe":nbCompe,
     "moyenneCompetence":moyenneCompetence,
-    "top1Competence":top1Competence
+    'topCompetencefront':topCompetencefront,
+    'nbOutils':nbOutils,
+    'moyenneOutil':moyenneOutil,
+    'topOutilfront':topOutilfront
     }
     return HttpResponse(template.render(context, request))
 
-# Liste consultant
+# Liste consultant PAGINEE
 def liste_consultant(request):
     template = loader.get_template('collab/liste_consultant.html')
-    context={}
+    collab_list= collaborateurs.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(collab_list, 10)
+    try:
+        collabs= paginator.page(page)
+    except PageNotAnInteger:
+        collabs = paginator.page(1)
+    except EmptyPage:
+        collabs = paginator.page(paginator.num_pages)
+    context={'collabs':collabs}
     return HttpResponse(template.render(context, request))
 
 #Detail consultant
-#WIP
-
+def collaborateur_detail(request, collaborateurs_id):
+    collab = get_object_or_404(collaborateurs, pk=collaborateurs_id)
+    mission_du_collab = experiences.objects.filter(collaborateurMission=collaborateurs_id)
+    template = loader.get_template('collab/detail_consultant.html')
+    context={'collab':collab, 'mission_du_collab':mission_du_collab}
+    return HttpResponse(template.render(context, request))
 #Ajout d'un consultant
 class collaborateursCreateView(CreateView):
     model = collaborateurs
@@ -90,10 +143,19 @@ def reussite_ajout_collaborateurs(request):
     context={}
     return HttpResponse(template.render(context, request))
 
-#Liste client
+#Liste client PAGINEE
 def liste_client(request):
     template = loader.get_template('collab/liste_client.html')
-    context={}
+    client_list= client.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(client_list, 10)
+    try:
+        clients= paginator.page(page)
+    except PageNotAnInteger:
+        clients = paginator.page(1)
+    except EmptyPage:
+        clients = paginator.page(paginator.num_pages)
+    context={'clients':clients}
     return HttpResponse(template.render(context, request))
 #Ajout d'un client
 class clientCreateView(CreateView):
@@ -104,10 +166,19 @@ def reussite_ajout_client(request):
     template = loader.get_template('collab/reussite_ajout_client.html')
     context={}
     return HttpResponse(template.render(context, request))    
-#Liste compétences
+#Liste compétences PAGINEE
 def liste_competence(request):
     template = loader.get_template('collab/liste_competence.html')
-    context={}
+    compe_list= competences.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(compe_list, 10)
+    try:
+        compes= paginator.page(page)
+    except PageNotAnInteger:
+        compes = paginator.page(1)
+    except EmptyPage:
+        compes = paginator.page(paginator.num_pages)
+    context={'compes':compes}
     return HttpResponse(template.render(context, request))
 #Ajout d'une competence
 class competencesCreateView(CreateView):
@@ -120,10 +191,19 @@ def reussite_ajout_competence(request):
     context={}
     return HttpResponse(template.render(context, request))
 
-#Liste outil
+#Liste outil REELLEMENT PAGINEE
 def liste_outil(request):
     template = loader.get_template('collab/liste_outil.html')
-    context={}
+    outils_list= outils.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(outils_list, 10)
+    try:
+        tools= paginator.page(page)
+    except PageNotAnInteger:
+        tools = paginator.page(1)
+    except EmptyPage:
+        tools = paginator.page(paginator.num_pages)
+    context={'tools':tools}
     return HttpResponse(template.render(context, request))
 
 class outilsCreateView(CreateView):

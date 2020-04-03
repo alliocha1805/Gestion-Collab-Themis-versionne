@@ -1,11 +1,12 @@
 {% load static %}
+{% load collab_extras %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site consulting final</title>
+    <title>Liste des consultants Themis</title>
     <link rel="stylesheet" href={% static "collab/assets/bootstrap/css/bootstrap.min.css" %}>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,80">
@@ -18,39 +19,39 @@
 <body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">Brand</a>
+            <div class="navbar-header"><a class="navbar-brand navbar-link" href="{% url 'index'%}">Collab.io</a>
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav">
-                    <li role="presentation"><a href="#">Accueill</a></li>
+                    <li role="presentation"><a href="{% url 'index'%}">Accueill</a></li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Collaborateurs <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Collaborateurs</a></li>
+                            <li role="presentation"><a href="{% url 'liste_consultant'%}">Liste Collaborateurs</a></li>
                             <li role="presentation"><a href="#">Ajout d'un collaborateur</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Clients <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Clients</a></li>
-                            <li role="presentation"><a href="#">Ajout d'un client</a></li>
+                            <li role="presentation"><a href="{% url 'liste_client'%}">Liste Clients</a></li>
+                            <li role="presentation"><a href="{% url 'clientCreateView'%}">Ajout d'un client</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Compétences <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Compétences</a></li>
-                            <li role="presentation"><a href="#">Ajout d'une compétence</a></li>
+                            <li role="presentation"><a href="{% url 'liste_competence'%}">Liste Compétences</a></li>
+                            <li role="presentation"><a href="{% url 'competencesCreateView'%}">Ajout d'une compétence</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Outils <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Outils</a></li>
-                            <li role="presentation"><a href="#">Ajout d'un outil</a></li>
+                            <li role="presentation"><a href="{% url 'liste_outil'%}">Liste Outils</a></li>
+                            <li role="presentation"><a href="{% url 'outilsCreateView'%}">Ajout d'un outil</a></li>
                         </ul>
                     </li>
                     <li role="presentation"><a href="#">CRA </a></li>
                     <li role="presentation"><a href="#" id="nav_login" class="navbar-nav ml-auto">Connexion / Deconnexion</a></li>
-                    <li role="presentation"><a href="#" id="nav_login" class="navbar-nav ml-auto">Admin </a></li>
+                    <li role="presentation"><a href="{% url 'admin:index'%}" id="nav_login" class="navbar-nav ml-auto">Admin </a></li>
                 </ul>
             </div>
         </div>
@@ -73,126 +74,52 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for collab in collabs %}
+                            {% with truc=collab.pk %}
                             <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
+                                <td>{{collab.nomCollaborateur}} </td>
+                                <td>{{collab.prenomCollaborateur}} </td>
+                                <td>{{collab.titreCollaborateur}} </td>
+                                <td>{{truc|statut_consultant}} </td>
+                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="{% url 'collaborateur_detail' collaborateurs_id=collab.pk %}">AFFICHER </a></td>
                                 <td class="hidden-xs hidden-sm">
                                     <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Anne </td>
-                                <td>Onyme </td>
-                                <td>Chef de Projet BI</td>
-                                <td>Non </td>
-                                <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="#">AFFICHER </a></td>
-                                <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-                            </tr>
+                            {% endwith %}
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        {% if clients.has_other_pages %}
         <div class="row">
             <div class="col-lg-offset-1 col-md-12 col-md-offset-1">
                 <nav>
                     <ul class="pagination pagination-lg">
+                        {% if clients.has_previous %}
                         <li><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                        <li><a>1</a></li>
-                        <li><a>2</a></li>
-                        <li><a>3</a></li>
-                        <li><a>4</a></li>
-                        <li><a>5</a></li>
-                        <li><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in clients.paginator.page_range %}
+                            {% if clients.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if clients.has_next %}
+                            <li><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
         </div>
+        {% endif %}
     </div>
     <script src={% static "collab/assets/js/jquery.min.js" %}></script>
     <script src={% static "collab/assets/bootstrap/js/bootstrap.min.js" %}></script>

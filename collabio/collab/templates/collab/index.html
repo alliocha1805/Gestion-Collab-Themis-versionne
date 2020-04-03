@@ -136,26 +136,12 @@
                                         <td>Compétence(s) moyenne par consultant</td>
                                         <td>{{moyenneCompetence}}</td>
                                     </tr>
+                                    {% for elt in topCompetencefront %}
                                     <tr>
-                                        <td>Top 1 Compétence</td>
-                                        <td>{{top1Competence}}</td>
+                                        <td>Top {{ forloop.counter }} Compétence</td>
+                                        <td>{{elt}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Top 2 Compétence</td>
-                                        <td>Product Owner</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Top 3 Compétence</td>
-                                        <td>Audit </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Top 4 Compétence</td>
-                                        <td>Management </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Top 5 Compétence</td>
-                                        <td>Conduite du changement</td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div><a class="btn btn-info btn-block" role="button" href="{% url 'liste_competence'%}">Voir Compétences</a></div>
@@ -171,32 +157,18 @@
                                 <tbody>
                                     <tr>
                                         <td>Outil(s) enregistré(s)</td>
-                                        <td>125 </td>
+                                        <td>{{nbOutils}} </td>
                                     </tr>
                                     <tr>
                                         <td>Nb Outil(s) moyen par consultant</td>
-                                        <td>100 </td>
+                                        <td>{{moyenneOutil}} </td>
                                     </tr>
+                                    {% for elt in topOutilfront %}
                                     <tr>
-                                        <td>Top 1 Outil</td>
-                                        <td>Office </td>
+                                        <td>Top {{ forloop.counter }} Compétence</td>
+                                        <td>{{elt}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Top 2 Outil</td>
-                                        <td>Axure </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Top 3 Outil</td>
-                                        <td>Python </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Top 4 Outil</td>
-                                        <td>Boostrap </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Top 5 Outil</td>
-                                        <td>SalesForce </td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div><a class="btn btn-info btn-block" role="button" href="{% url 'liste_outil'%}">Voir Outils</a></div>

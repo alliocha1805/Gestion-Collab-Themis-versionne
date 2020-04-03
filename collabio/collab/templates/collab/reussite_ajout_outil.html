@@ -19,39 +19,39 @@
 <body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">Brand</a>
+            <div class="navbar-header"><a class="navbar-brand navbar-link" href="{% url 'index'%}">Collab.io</a>
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav">
-                    <li role="presentation"><a href="#">Accueill</a></li>
+                    <li role="presentation"><a href="{% url 'index'%}">Accueill</a></li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Collaborateurs <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Collaborateurs</a></li>
+                            <li role="presentation"><a href="{% url 'liste_consultant'%}">Liste Collaborateurs</a></li>
                             <li role="presentation"><a href="#">Ajout d'un collaborateur</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Clients <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Clients</a></li>
-                            <li role="presentation"><a href="#">Ajout d'un client</a></li>
+                            <li role="presentation"><a href="{% url 'liste_client'%}">Liste Clients</a></li>
+                            <li role="presentation"><a href="{% url 'clientCreateView'%}">Ajout d'un client</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Compétences <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Compétences</a></li>
-                            <li role="presentation"><a href="#">Ajout d'une compétence</a></li>
+                            <li role="presentation"><a href="{% url 'liste_competence'%}">Liste Compétences</a></li>
+                            <li role="presentation"><a href="{% url 'competencesCreateView'%}">Ajout d'une compétence</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Outils <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">Liste Outils</a></li>
-                            <li role="presentation"><a href="#">Ajout d'un outil</a></li>
+                            <li role="presentation"><a href="{% url 'liste_outil'%}">Liste Outils</a></li>
+                            <li role="presentation"><a href="{% url 'outilsCreateView'%}">Ajout d'un outil</a></li>
                         </ul>
                     </li>
                     <li role="presentation"><a href="#">CRA </a></li>
                     <li role="presentation"><a href="#" id="nav_login" class="navbar-nav ml-auto">Connexion / Deconnexion</a></li>
-                    <li role="presentation"><a href="#" id="nav_login" class="navbar-nav ml-auto">Admin </a></li>
+                    <li role="presentation"><a href="{% url 'admin:index'%}" id="nav_login" class="navbar-nav ml-auto">Admin </a></li>
                 </ul>
             </div>
         </div>
