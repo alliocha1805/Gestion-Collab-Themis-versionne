@@ -9,7 +9,7 @@ import logging
 
 # Homepage
 def index(request):
-    template = loader.get_template('collab/index.html')
+    template = loader.get_template('collab/index2.html')
     nbConsultant = collaborateurs.objects.count()
     nbConsultantInterco = collaborateurs.objects.filter(estEnIntercontrat=True).count()
     nbConsultantEnMission = nbConsultant - nbConsultantInterco
@@ -145,7 +145,7 @@ def reussite_ajout_collaborateurs(request):
 
 #Liste client PAGINEE
 def liste_client(request):
-    template = loader.get_template('collab/liste_client.html')
+    template = loader.get_template('collab/liste_client2.html')
     client_list= client.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(client_list, 10)
@@ -168,7 +168,7 @@ def reussite_ajout_client(request):
     return HttpResponse(template.render(context, request))    
 #Liste compétences PAGINEE
 def liste_competence(request):
-    template = loader.get_template('collab/liste_competence.html')
+    template = loader.get_template('collab/liste_competence2.html')
     compe_list= competences.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(compe_list, 10)

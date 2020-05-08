@@ -1,20 +1,20 @@
 {% load static %}
-{% load crispy_forms_tags %}
+{% load admin_urls %}
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Site consulting final</title>
-        <link rel="stylesheet" href={% static "collab/assets/bootstrap/css/bootstrap.min.css" %}>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,80">
-        <link rel="stylesheet" href={% static "collab/assets/css/styles.css" %}>
-        <link rel="stylesheet" href={% static "collab/assets/css/Full-Width-Center-Container.css" %}>
-        <link rel="stylesheet" href={% static "collab/assets/css/Simple-Profile-Info.css" %}>
-        <link rel="stylesheet" href={% static "collab/assets/css/Google-Style-Login.css" %}>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site consulting final</title>
+    <link rel="stylesheet" href={% static "collab/assets/bootstrap/css/bootstrap.min.css" %}>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,80">
+    <link rel="stylesheet" href={% static "collab/assets/css/styles.css" %}>
+    <link rel="stylesheet" href={% static "collab/assets/css/Full-Width-Center-Container.css" %}>
+    <link rel="stylesheet" href={% static "collab/assets/css/Simple-Profile-Info.css" %}>
+    <link rel="stylesheet" href={% static "collab/assets/css/Google-Style-Login.css" %}>
+</head>
 
 <body>
     <nav class="navbar navbar-default">
@@ -52,35 +52,23 @@
                     <li role="presentation"><a href="#">CRA </a></li>
                     {% if user.is_authenticated %}
                     <li role="presentation"><a href="{% url 'logout' %}" id="nav_login" class="navbar-nav ml-auto">Deconnexion</a></li>
+                    <li role="presentation"><a href="{% url 'admin:index'%}" id="nav_login" class="navbar-nav ml-auto">Admin </a></li>
                     {% else %}
                     <li role="presentation"><a href="{% url 'login' %}" id="nav_login" class="navbar-nav ml-auto">Connexion</a></li>
                     {% endif %}
-                    <li role="presentation"><a href="{% url 'admin:index'%}" id="nav_login" class="navbar-nav ml-auto">Admin </a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    {% if user.is_authenticated %}
-    <div class="page-header">
-        <h1 class="text-center">Ajout Collaborateur</h1></div>
-    <div class="container" id="container">
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
-                {% block content %}
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-success">Sauvegarder</button>
-                </form>
-                {% endblock %}
-            </div>
-        </div>
-    </div>
-    {% else %}
-    <p style="text-align:center;"> <b>Veuillez vous <a href="/accounts/login">identifier</a></b></p>
-    {% endif %}
-    <script src={% static "collab/assets/js/jquery.min.js" %}></script>
-    <script src={% static "collab/assets/bootstrap/js/bootstrap.min.js" %}></script>
+<div style="text-align:center">
+<h2>Connexion</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+</div>
+<script src={% static "collab/assets/js/jquery.min.js" %}></script>
+<script src={% static "collab/assets/bootstrap/js/bootstrap.min.js" %}></script>
 </body>
-
 </html>
