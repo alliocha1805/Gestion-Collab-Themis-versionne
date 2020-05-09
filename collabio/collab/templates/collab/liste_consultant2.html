@@ -21,6 +21,7 @@
                         <tbody>
                             {% for collab in collabs %}
                             {% with truc=collab.pk %}
+                            {% with "/admin/collab/collaborateurs/"|addstr:collab.pk|addstr:"/change/" as urlModif %}
                             <tr>
                                 <td>{{collab.nomCollaborateur}} </td>
                                 <td>{{collab.prenomCollaborateur}} </td>
@@ -28,9 +29,10 @@
                                 <td>{{truc|statut_consultant}} </td>
                                 <td class="hidden-xs hidden-sm"> <a class="btn btn-info" role="button" href="{% url 'collaborateur_detail' collaborateurs_id=collab.pk %}">AFFICHER </a></td>
                                 <td class="hidden-xs hidden-sm">
-                                    <a class="btn btn-primary" role="button" href="#"> <i class="glyphicon glyphicon-pencil"></i></a>
+                                    <a class="btn btn-primary" role="button" href={{urlModif}}> <i class="glyphicon glyphicon-pencil"></i></a>
                                 </td>
                             </tr>
+                            {% endwith %}
                             {% endwith %}
                             {% endfor %}
                         </tbody>

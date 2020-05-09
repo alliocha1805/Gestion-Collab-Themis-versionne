@@ -81,3 +81,8 @@ def statut_client(id_client):
         return "Oui"
     else:
         return "Non"
+
+#Ajouter deux string
+@register.filter
+def addstr(arg1, arg2):
+    return str(arg1) + str(arg2)
