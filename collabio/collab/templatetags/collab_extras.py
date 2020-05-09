@@ -77,7 +77,10 @@ def recup_mission_en_cours(id_client):
 @register.filter(name='statut_client')
 def statut_client(id_client):
     nb = experiences.objects.filter(dateFin__gte=datetime.date.today(),client=id_client).count()
+    nb2 = experiences.objects.filter(dateFin=None,client=id_client).count()
     if nb > 0:
+        return "Oui"
+    elif nb2 > 0:
         return "Oui"
     else:
         return "Non"
