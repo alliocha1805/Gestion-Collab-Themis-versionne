@@ -71,3 +71,11 @@ class experiences(models.Model):
     collaborateurMission = models.ForeignKey(collaborateurs, on_delete=models.CASCADE, default='')
     def __str__(self):
         return self.nomMission
+
+#Projet (un projet peut englober plusieurs Expériences par exemple projet SAPHIR)
+class projet(models.Model):
+    nomProjet = models.CharField(max_length=300)
+    nbJourHomme = models.IntegerField()
+    experiencesLiees = models.ManyToManyField(experiences)
+    def __str__(self):
+        return self.nomProjet

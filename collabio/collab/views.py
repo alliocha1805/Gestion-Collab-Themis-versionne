@@ -6,6 +6,7 @@ from collab.models import competences,client,collaborateurs,outils,experiences
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 import logging
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Homepage
 def index(request):
@@ -113,7 +114,7 @@ def index(request):
 
 # Liste consultant PAGINEE
 def liste_consultant(request):
-    template = loader.get_template('collab/liste_consultant.html')
+    template = loader.get_template('collab/liste_consultant2.html')
     collab_list= collaborateurs.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(collab_list, 10)
@@ -130,7 +131,7 @@ def liste_consultant(request):
 def collaborateur_detail(request, collaborateurs_id):
     collab = get_object_or_404(collaborateurs, pk=collaborateurs_id)
     mission_du_collab = experiences.objects.filter(collaborateurMission=collaborateurs_id)
-    template = loader.get_template('collab/detail_consultant.html')
+    template = loader.get_template('collab/detail_consultant2.html')
     context={'collab':collab, 'mission_du_collab':mission_du_collab}
     return HttpResponse(template.render(context, request))
 #Ajout d'un consultant
@@ -139,7 +140,7 @@ class collaborateursCreateView(CreateView):
     fields = ('nomCollaborateur', 'prenomCollaborateur','titreCollaborateur','texteIntroductifCv','nbAnneeExperience','listeCompetencesCles','formation','parcours','methodologie','langues','outilsCollaborateur','estEnIntercontrat')
     success_url = 'succes/'
 def reussite_ajout_collaborateurs(request):
-    template = loader.get_template('collab/reussite_ajout_collaborateurs.html')
+    template = loader.get_template('collab/reussite_ajout_collaborateurs2.html')
     context={}
     return HttpResponse(template.render(context, request))
 
@@ -158,12 +159,14 @@ def liste_client(request):
     context={'clients':clients}
     return HttpResponse(template.render(context, request))
 #Ajout d'un client
-class clientCreateView(CreateView):
+class clientCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     model = client
     fields = ('nomClient', 'domaineClient','logoClient')
     success_url = 'succes/'
 def reussite_ajout_client(request):
-    template = loader.get_template('collab/reussite_ajout_client.html')
+    template = loader.get_template('collab/reussite_ajout_client2.html')
     context={}
     return HttpResponse(template.render(context, request))    
 #Liste compétences PAGINEE
@@ -181,19 +184,21 @@ def liste_competence(request):
     context={'compes':compes}
     return HttpResponse(template.render(context, request))
 #Ajout d'une competence
-class competencesCreateView(CreateView):
+class competencesCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     model = competences
     fields = ('nomCompetence', 'famille')
     success_url = 'succes/'
 
 def reussite_ajout_competence(request):
-    template = loader.get_template('collab/reussite_ajout_compe.html')
+    template = loader.get_template('collab/reussite_ajout_compe2.html')
     context={}
     return HttpResponse(template.render(context, request))
 
 #Liste outil REELLEMENT PAGINEE
 def liste_outil(request):
-    template = loader.get_template('collab/liste_outil.html')
+    template = loader.get_template('collab/liste_outil2.html')
     outils_list= outils.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(outils_list, 10)
@@ -206,11 +211,13 @@ def liste_outil(request):
     context={'tools':tools}
     return HttpResponse(template.render(context, request))
 
-class outilsCreateView(CreateView):
+class outilsCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     model = outils
     fields = ('nomOutil', 'famille')
     success_url = 'succes/'
 def reussite_ajout_outil(request):
-    template = loader.get_template('collab/reussite_ajout_outil.html')
+    template = loader.get_template('collab/reussite_ajout_outil2.html')
     context={}
     return HttpResponse(template.render(context, request))
