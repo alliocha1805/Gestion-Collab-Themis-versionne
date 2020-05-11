@@ -55,6 +55,7 @@ class collaborateurs(models.Model):
         ('E', 'Externe'),
     )
     typeContrat = models.CharField(max_length=1, choices=TYPE_CONTRAT, default='I')
+    tjm=models.DecimalField(decimal_places=2,max_digits=6, default=0.0)
     listeCompetencesCles = models.ManyToManyField(competences)
     formation = models.TextField()
     parcours = models.TextField()
