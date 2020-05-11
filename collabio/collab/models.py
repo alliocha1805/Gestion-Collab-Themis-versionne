@@ -47,6 +47,14 @@ class collaborateurs(models.Model):
     titreCollaborateur = models.CharField(max_length=200)
     texteIntroductifCv = models.TextField(default='')
     nbAnneeExperience = models.IntegerField()
+    codePostal = models.CharField(default='',max_length=200)
+    telephone = models.CharField(default='',max_length=200)
+    mail = models.CharField(default='',max_length=200)
+    TYPE_CONTRAT = (
+        ('I', 'Interne'),
+        ('E', 'Externe'),
+    )
+    typeContrat = models.CharField(max_length=1, choices=TYPE_CONTRAT, default='I')
     listeCompetencesCles = models.ManyToManyField(competences)
     formation = models.TextField()
     parcours = models.TextField()
@@ -56,6 +64,8 @@ class collaborateurs(models.Model):
     estEnIntercontrat = models.BooleanField(default=False)
     def __str__(self):
         return self.nomCollaborateur
+    def get_absolute_url(self):
+        return "/consultant/%i/" % self.id
 
 #Experiences
 class experiences(models.Model):
@@ -71,6 +81,9 @@ class experiences(models.Model):
     collaborateurMission = models.ForeignKey(collaborateurs, on_delete=models.CASCADE, default='')
     def __str__(self):
         return self.nomMission
+    def get_absolute_url(self):
+        collab=self.collaborateurMission.id
+        return "/consultant/%i/" % collab
 
 #Projet (un projet peut englober plusieurs Expériences par exemple projet SAPHIR)
 class projet(models.Model):

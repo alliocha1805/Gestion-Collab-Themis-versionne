@@ -114,7 +114,7 @@ def index(request):
 
 # Liste consultant PAGINEE
 def liste_consultant(request):
-    template = loader.get_template('collab/liste_consultant2.html')
+    template = loader.get_template('collab/liste_consultant_recherche.html')
     collab_list= collaborateurs.objects.all()
     page = request.GET.get('page', 1)
     paginator = Paginator(collab_list, 10)
