@@ -126,6 +126,53 @@ def liste_consultant(request):
         collabs = paginator.page(paginator.num_pages)
     context={'collabs':collabs}
     return HttpResponse(template.render(context, request))
+#Liste consultant recherche WORK IN PROGRESS
+def recherche_consultant(request):
+    #chargement du template HTML
+    template = loader.get_template('collab/liste_consultant_recherche.html')
+    #Recherche
+    keywords=''
+    if request.method=='POST': # form was submitted
+        keywords = request.POST.get("nom", "") # <input type="text" name="nom">
+        all_queries = None
+        search_fields = ('nomCollaborateur','prenomCollaborateur')
+        for keyword in keywords.split(' '):
+            keyword_query = None
+            for field in search_fields:
+                each_query = Q(**{field + '__icontains': keyword})
+                if not keyword_query:
+                    keyword_query = each_query
+                else:
+                    keyword_query = keyword_query | each_query
+                    if not all_queries:
+                        all_queries = keyword_query
+                    else:
+                        all_queries = all_queries & keyword_query
+
+        collab_list = collaborateurs.objects.filter(all_queries).distinct()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(collab_list, 5)
+        try:
+            collabs= paginator.page(page)
+        except PageNotAnInteger:
+            collabs = paginator.page(1)
+        except EmptyPage:
+            collabs = paginator.page(paginator.num_pages)
+        context={'collabs':collabs}
+        return HttpResponse(template.render(context, request))
+
+    else: # no data submitted
+        collab_list= collaborateurs.objects.all()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(collab_list, 10)
+        try:
+            collabs= paginator.page(page)
+        except PageNotAnInteger:
+            collabs = paginator.page(1)
+        except EmptyPage:
+            collabs = paginator.page(paginator.num_pages)
+        context={'collabs':collabs}
+        return HttpResponse(template.render(context, request))
 
 #Detail consultant
 def collaborateur_detail(request, collaborateurs_id):
