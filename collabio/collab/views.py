@@ -220,7 +220,7 @@ def reussite_ajout_client(request):
 #Liste compétences PAGINEE
 def liste_competence(request):
     template = loader.get_template('collab/liste_competence2.html')
-    compe_list= competences.objects.all()
+    compe_list= competences.objects.all().order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(compe_list, 10)
     try:
@@ -247,7 +247,7 @@ def reussite_ajout_competence(request):
 #Liste outil REELLEMENT PAGINEE
 def liste_outil(request):
     template = loader.get_template('collab/liste_outil2.html')
-    outils_list= outils.objects.all()
+    outils_list= outils.objects.all().order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(outils_list, 10)
     try:
