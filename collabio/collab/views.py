@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from operator import itemgetter
 import logging
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 # Homepage
 def index(request):

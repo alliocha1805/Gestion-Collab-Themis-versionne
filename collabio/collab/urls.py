@@ -8,7 +8,7 @@ urlpatterns = [
     path('consultant/<int:collaborateurs_id>/', views.collaborateur_detail, name='collaborateur_detail'),
     path('consultant/ajout/', views.collaborateursCreateView.as_view(), name='collaborateursCreateView'),
     path('consultant/ajout/succes/', views.reussite_ajout_collaborateurs, name='reussite_ajout_collaborateurs'),
-    path('consultant/?nom=<str:search>', views.recherche_consultant, name='recherche_consultant'),
+    path('consultant/recherche', views.recherche_consultant, name='recherche_consultant'),
     path('client/', views.liste_client, name='liste_client'),
     path('client/ajout/', views.clientCreateView.as_view(), name='clientCreateView'),
     path('client/ajout/succes/', views.reussite_ajout_client, name='reussite_ajout_client'),

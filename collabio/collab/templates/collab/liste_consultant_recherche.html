@@ -8,11 +8,11 @@
             <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
                 <div><a class="btn btn-primary btn-block" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" role="button" href="#collapse-1">RECHERCHE </a>
                     <div class="collapse" id="collapse-1">
-                        <form method="post">
+                        <form method="post" action="recherche">
                             {% csrf_token %}
                             <label>Nom </label>
                             <input class="form-control input-sm" type="text" style="margin-bottom: 10px;" name="nom">
-                            <button class="btn btn-default btn-block validation_recherche" type="button">Valider </button>
+                            <button class="btn btn-default btn-block validation_recherche" type="submit">Valider </button>
                         </form>
                     </div>
                 </div>
