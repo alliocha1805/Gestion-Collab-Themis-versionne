@@ -92,6 +92,7 @@ class experiences(models.Model):
 class projet(models.Model):
     nomProjet = models.CharField(max_length=300)
     nbJourHomme = models.IntegerField()
+    contexteMission = models.TextField(default='')
     experiencesLiees = models.ManyToManyField(experiences)
     def __str__(self):
         return self.nomProjet
