@@ -144,7 +144,7 @@
                 {% else %}
                 <h3 class="text-center titre_mission">{{mission.niveauIntervention}} - {{mission.client}} ( {{mission.client.domaineClient}} ) - {{mission.dateDebut}}/{{mission.dateFin}} (9 mois)</h3>
                 {% endif %}
-                <p><strong>{{mission.contexteMission}}</strong> </p>
+                <p><strong>{% with idmission=mission.pk %}{% with contexte=idmission|contexte_projet %}{{contexte}}{% endwith %}{% endwith %}</strong> </p>
                 <p><strong>Descriptif :</strong> {{mission.descriptifMission}} </p>
                 <p><strong>Environnement :</strong> {{mission.environnementMission}} </p>
             </div>

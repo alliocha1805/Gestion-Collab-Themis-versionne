@@ -78,7 +78,7 @@ class experiences(models.Model):
     dateDebut = models.DateField('date de début de mission')
     dateFin = models.DateField('date de fin de mission', blank=True, null=True)
     nbJourHomme = models.IntegerField()
-    contexteMission = models.TextField()
+    contexteMission = models.TextField(default='')
     descriptifMission = models.TextField()
     environnementMission =  models.TextField()
     collaborateurMission = models.ForeignKey(collaborateurs, on_delete=models.CASCADE, default='')

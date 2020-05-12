@@ -115,7 +115,7 @@ def index(request):
 # Liste consultant PAGINEE
 def liste_consultant(request):
     template = loader.get_template('collab/liste_consultant_recherche.html')
-    collab_list= collaborateurs.objects.all()
+    collab_list= collaborateurs.objects.all().order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(collab_list, 10)
     try:
@@ -194,7 +194,7 @@ def reussite_ajout_collaborateurs(request):
 #Liste client PAGINEE
 def liste_client(request):
     template = loader.get_template('collab/liste_client2.html')
-    client_list= client.objects.all()
+    client_list= client.objects.all().order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(client_list, 10)
     try:

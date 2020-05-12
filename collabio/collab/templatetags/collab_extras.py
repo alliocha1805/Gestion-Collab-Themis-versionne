@@ -1,7 +1,7 @@
 from django import template
-from collab.models import outils, collaborateurs, competences, client, experiences
+from collab.models import outils, collaborateurs, competences, client, experiences, projet
 import datetime
-
+from django.shortcuts import get_object_or_404
 register = template.Library()
 
 #Definir statut consultant
@@ -49,6 +49,12 @@ def liste_secteur_consultant(id_consultant):
         else:
            liste_secteur.append(secteur) 
     return liste_secteur
+#recup contexte projet d'une mission
+@register.filter(name='contexte_projet')
+def contexte_projet(id_mission):
+    projet_de_la_mission = get_object_or_404(projet, experiencesLiees=id_mission)
+    contexte_mission = projet_de_la_mission.contexteMission
+    return contexte_mission
 #Calcul du nombre de consultant par outil
 @register.filter(name='nb_consultant_outil')
 def nb_consultant_outil(id_outil):
