@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.conf import settings
 
 #Clients
 class domaine(models.Model):
@@ -50,6 +51,7 @@ class collaborateurs(models.Model):
     codePostal = models.CharField(default='',max_length=200)
     telephone = models.CharField(default='',max_length=200)
     mail = models.CharField(default='',max_length=200)
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     TYPE_CONTRAT = (
         ('I', 'Interne'),
         ('E', 'Externe'),
