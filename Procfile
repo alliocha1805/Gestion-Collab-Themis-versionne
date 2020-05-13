@@ -1,1 +1,1 @@
-web: gunicorn collab:app
+web: gunicorn collabio:app
