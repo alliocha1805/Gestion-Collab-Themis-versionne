@@ -1,1 +1,1 @@
-web: gunicorn collabio:collab
+web: gunicorn collabio.wsgi:application --log-file -
