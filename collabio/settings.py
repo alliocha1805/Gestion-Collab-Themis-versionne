@@ -125,7 +125,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+#cripsy form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+#login system
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
