@@ -40,7 +40,7 @@
                 <nav>
                     <ul class="pagination pagination-lg">
                         {% if clients.has_previous %}
-                        <li><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                        <li><a aria-label="Previous" href="?page={{ clients.previous_page_number }}" ><span aria-hidden="true">«</span></a></li>
                         {% else %}
                         <li class="disabled"><span>&laquo;</span></li>
                         {% endif %}
@@ -52,7 +52,7 @@
                             {% endif %}
                         {% endfor %}
                         {% if clients.has_next %}
-                            <li><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                            <li><a aria-label="Next" href="?page={{ clients.next_page_number }}"><span aria-hidden="true">»</span></a></li>
                         {% else %}
                             <li class="disabled"><span>&raquo;</span></li>
                         {% endif %}

@@ -36,7 +36,7 @@
                 <nav>
                     <ul class="pagination pagination-lg">
                         {% if tools.has_previous %}
-                        <li><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                        <li><a aria-label="Previous" href="?page={{ tools.previous_page_number }}"><span aria-hidden="true">«</span></a></li>
                         {% else %}
                         <li class="disabled"><span>&laquo;</span></li>
                         {% endif %}
@@ -48,7 +48,7 @@
                             {% endif %}
                         {% endfor %}
                         {% if tools.has_next %}
-                            <li><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                            <li><a aria-label="Next" href="?page={{ tools.next_page_number }}"><span aria-hidden="true">»</span></a></li>
                         {% else %}
                             <li class="disabled"><span>&raquo;</span></li>
                         {% endif %}
